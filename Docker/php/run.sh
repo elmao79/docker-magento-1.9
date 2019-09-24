@@ -7,7 +7,7 @@ if [ -z "$(ls -A ${APP_DIR})" ]; then
     mv /tmp/magento-mirror-1.9.3.4/.h* ${APP_DIR}/
     mv /tmp/magento-mirror-1.9.3.4/.g* ${APP_DIR}/
     rm -Rf /tmp/magento-mirror-1.9.3.4
-    #rm /tmp/1.9.3.4.tar.gz
+    rm /tmp/1.9.3.4.tar.gz
 fi
 
 php-fpm

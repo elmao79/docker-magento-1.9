@@ -31,22 +31,44 @@ services:
         image: php-magento-1.9
         volumes:
             - magento-app:${APP_DIR}
+        entrypoint: /run.sh
         ports:
             - 9000:9000
         networks:
             - magento-network
+        environment:
+            - MAGENTO_LOCALE=${MAGENTO_LOCALE}
+            - MAGENTO_TIMEZONE=${MAGENTO_TIMEZONE}
+            - MAGENTO_DEFAULT_CURRENCY=${MAGENTO_DEFAULT_CURRENCY}
+            - MYSQL_HOST=${MYSQL_HOST}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MAGENTO_URL=${MAGENTO_URL}
+            - MAGENTO_ADMIN_FIRSTNAME=${MAGENTO_ADMIN_FIRSTNAME}
+            - MAGENTO_ADMIN_LASTNAME=${MAGENTO_ADMIN_LASTNAME}
+            - MAGENTO_ADMIN_EMAIL=${MAGENTO_ADMIN_EMAIL}
+            - MAGENTO_ADMIN_USERNAME=${MAGENTO_ADMIN_USERNAME}
+            - MAGENTO_ADMIN_PASSWORD=${MAGENTO_ADMIN_PASSWORD}
         links:
             - db
         stdin_open: true
         tty: true
+        depends_on:
+            - db
     db:
         image: mysql:5.6.23
         volumes:
             - magento-db:/var/lib/mysql/data
+            - ./db/run.sh:/run.sh
+        entrypoint: /run.sh
         networks:
             - magento-network
         environment:
-            - MYSQL_ROOT_PASSWORD=magento
+            - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MAGENTO_DATABASE=${MYSQL_DATABASE}
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         ports:

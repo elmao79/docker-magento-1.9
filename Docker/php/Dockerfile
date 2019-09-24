@@ -59,14 +59,10 @@ RUN echo "xdebug.idekey = \"${XDEBUG_IDEKEY}\"" >> ${XDEBUG_INI} && \
     echo "xdebug.var_display_max_depth = -1" >> ${XDEBUG_INI}
 
 RUN wget https://codeload.github.com/OpenMage/magento-mirror/tar.gz/1.9.3.4 -O /tmp/1.9.3.4.tar.gz
-#    tar xzvf /tmp/1.9.3.4.tar.gz -C /tmp && \
-#    mv /tmp/magento-mirror-1.9.3.4/* ${APP_DIR}/ && \
-#    mv /tmp/magento-mirror-1.9.3.4/.h* ${APP_DIR}/ && \
-#    mv /tmp/magento-mirror-1.9.3.4/.g* ${APP_DIR}/
-#RUN rm /tmp/1.9.3.4.tar.gz && rm -Rf /tmp/magento-mirror-1.9.3.4
+
+RUN apk add --no-cache mysql-client
 
 COPY run.sh /run.sh
-
-#CMD ['/run.sh']
+COPY install-magento /usr/local/bin/install-magento
 
 WORKDIR ${APP_DIR}
