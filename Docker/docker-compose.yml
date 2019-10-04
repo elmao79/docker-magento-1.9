@@ -7,7 +7,7 @@ services:
                 - APP_DIR=${APP_DIR}
         image: apache-magento-1.9
         volumes:
-            - magento-app:${APP_DIR}
+            - ../src/:${APP_DIR}
         ports:
             - ${MAGENTO_PORT}:80
         networks:
@@ -30,7 +30,7 @@ services:
                 - HOST_IP=${HOST_IP}
         image: php-magento-1.9
         volumes:
-            - magento-app:${APP_DIR}
+            - ../src/:${APP_DIR}
         entrypoint: /run.sh
         ports:
             - 9000:9000
@@ -57,10 +57,11 @@ services:
         depends_on:
             - db
     db:
-        image: mysql:5.6.23
+        build:
+            context: ./db
+        image: mysql-magento-1.9
         volumes:
-            - magento-db:/var/lib/mysql/data
-            - ./db/run.sh:/run.sh
+            - magento-db:/var/lib/mysql
         entrypoint: /run.sh
         networks:
             - magento-network
@@ -80,7 +81,6 @@ services:
 
 volumes:
     magento-db:
-    magento-app:
 
 networks:
     magento-network:
